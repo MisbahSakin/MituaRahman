@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mitua Rahman, Café Consultant</title>
+<meta name="description" content="Independent café consultant. From the first idea to the final cup, I help founders build cafés people love, and businesses that last.">
+<meta name="theme-color" content="#0E0B08">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mitua Rahman, Café Consultant">
+<meta property="og:description" content="Great cafés don't happen by accident. From the first idea to the final cup, I help founders build cafés people love.">
+<meta property="og:image" content="/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/cormorant.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/cormorant-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="modulepreload" href="js/cup.js">
+<style>
+/* self-hosted fonts (latin subset, variable weight) */
+@font-face { font-family: Cormorant; font-style: normal; font-weight: 400 500; font-display: swap; src: url(assets/fonts/cormorant.woff2) format("woff2"); }
+@font-face { font-family: Cormorant; font-style: italic; font-weight: 400 500; font-display: swap; src: url(assets/fonts/cormorant-italic.woff2) format("woff2"); }
+@font-face { font-family: Jost; font-style: normal; font-weight: 300 500; font-display: swap; src: url(assets/fonts/jost.woff2) format("woff2"); }
+@font-face { font-family: "Pinyon Script"; font-style: normal; font-weight: 400; font-display: swap; src: url(assets/fonts/pinyon-script.woff2) format("woff2"); }
+:root {
+  --bg: #0E0B08;        /* roasted black */
+  --bg2: #17110C;       /* espresso */
+  --gold: #C9A26B;
+  --ivory: #EFE7DA;
+  --text: #CFC5B6;
+  --mute: #9C9184;
+  --line: rgba(201, 162, 107, .2);
+  --pad: clamp(16px, 6vw, 96px);
+  --serif: Cormorant, Georgia, serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ivory); font: 300 17px/1.7 Jost, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+h2 { font-size: clamp(44px, 6vw, 76px); line-height: 1.02; letter-spacing: -.01em; }
+.label { display: block; font-size: 15px; color: var(--gold); margin-bottom: 18px; }
+.btn { display: inline-block; border-radius: 99px; padding: 16px 32px; font-size: 15px; font-weight: 400; letter-spacing: .02em; transition: background .3s, color .3s; }
+.btn.solid { background: var(--ivory); color: var(--bg); }
+.btn.solid:hover { background: var(--gold); }
+.btn.ghost { border: 1px solid var(--line); color: var(--ivory); }
+.btn.ghost:hover { border-color: var(--gold); }
+
+/* ---------- nav ---------- */
+nav { position: absolute; z-index: 5; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 40px; height: 96px; padding: 0 var(--pad); }
+.logo b { display: block; font: 500 22px/1.1 var(--serif); letter-spacing: .02em; }
+.logo span { font-size: 13px; color: var(--mute); }
+nav ul { display: flex; gap: 40px; list-style: none; margin-left: auto; font-size: 15px; color: var(--text); }
+nav ul a:hover { color: var(--gold); }
+nav .btn { padding: 12px 24px; }
+.menu-btn { display: none; margin-left: auto; background: none; border: 1px solid var(--line); color: var(--ivory); font: inherit; font-size: 15px; padding: 10px 22px; border-radius: 99px; }
+#menu { inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; border: 0; background: var(--bg); color: var(--ivory); padding: 24px 16px; flex-direction: column; justify-content: center; gap: 8px; }
+#menu:popover-open { display: flex; }
+@supports not selector(:popover-open) {
+  #menu { display: none; position: fixed; z-index: 20; }
+  #menu.open { display: flex; }
+}
+#menu a { font: 400 44px/1.3 var(--serif); padding: 4px 0; }
+.menu-close { position: absolute; top: 18px; right: 16px; background: none; border: 1px solid var(--line); color: var(--ivory); font: inherit; font-size: 15px; padding: 10px 22px; border-radius: 99px; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; min-height: max(100svh, 680px); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; gap: 48px; padding: 120px var(--pad) 72px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 50% 60% at 72% 58%, rgba(201, 140, 70, .16), transparent 70%); }
+.hero h1 { font-size: clamp(56px, 7.4vw, 112px); line-height: .96; letter-spacing: -.015em; margin-bottom: 32px; }
+.hero h1 .ln { display: block; overflow: hidden; padding-bottom: .06em; }
+.hero h1 .ln span { display: block; }
+.hero h1 em { color: var(--gold); }
+.hero p { max-width: 30em; color: var(--text); font-size: 18px; margin-bottom: 44px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 16px; }
+.stage { position: relative; justify-self: center; width: min(440px, 100%); }
+.stage::before { content: ""; position: absolute; inset: -14px; border: 1px solid var(--line); border-radius: 999px 999px 14px 14px; pointer-events: none; transition: opacity 1.6s; }
+.intro .stage::before { opacity: 0; }
+.arch { aspect-ratio: 11 / 15; border-radius: 999px 999px 8px 8px; overflow: hidden; position: relative; }
+.arch img { width: 100%; height: 100%; object-fit: cover; object-position: 56% 30%; }
+.arch::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(14, 11, 8, .75)); }
+.arch-cap { position: absolute; z-index: 1; right: 28px; bottom: 26px; text-align: right; font-size: 14px; color: var(--text); }
+.arch-cap b { display: block; font: italic 400 24px var(--serif); color: var(--ivory); }
+/* where the 3D cup comes to rest: the centre of this box is the saucer's centre */
+.cup-spot { position: absolute; left: -22%; bottom: -2%; width: 46%; aspect-ratio: 1; pointer-events: none; }
+#cup { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 1s; }
+.skip { position: fixed; z-index: 10; right: 24px; bottom: 24px; background: none; border: 1px solid var(--line); color: var(--mute); font: inherit; font-size: 14px; padding: 10px 20px; border-radius: 99px; cursor: pointer; transition: opacity .6s; }
+.skip:hover { color: var(--ivory); border-color: var(--gold); }
+
+/* opening sequence: everything but the cup waits until the pour is done */
+html:has(.intro), .intro { overflow: hidden; }
+.hero .rv, nav { transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .7, .2, 1), clip-path 1.6s cubic-bezier(.6, 0, .2, 1); }
+.intro nav, .intro .hero .rv { opacity: 0; }
+.intro .hero h1 .ln span { transform: translateY(140%); }
+.intro .hero .arch { clip-path: inset(100% 0 0 0 round 999px 999px 8px 8px); }
+.hero h1 .ln span { transition: transform 1.1s cubic-bezier(.2, .7, .2, 1); }
+.hero h1 .ln:nth-child(2) span { transition-delay: .12s; }
+.hero h1 .ln:nth-child(3) span { transition-delay: .24s; }
+.hero .arch { clip-path: inset(0 0 0 0 round 999px 999px 8px 8px); transition: clip-path 1.6s cubic-bezier(.6, 0, .2, 1); }
+.hero p.rv { transition-delay: .5s; }
+.hero .ctas.rv { transition-delay: .65s; }
+.ready .skip, .no-intro .skip { opacity: 0; pointer-events: none; }
+
+/* ---------- proof ---------- */
+.proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.proof div { padding: 56px var(--pad); text-align: center; }
+.proof div + div { border-left: 1px solid var(--line); }
+.proof b { display: block; font: 400 clamp(56px, 6vw, 88px)/1 var(--serif); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+.proof span { color: var(--mute); font-size: 15px; }
+
+/* ---------- services: sticky story ---------- */
+.services { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.svc-figure { position: sticky; top: 0; height: 100svh; padding: 48px 0 48px var(--pad); }
+.svc-figure .frame { position: relative; height: 100%; border-radius: 8px; overflow: hidden; }
+.svc-figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease; }
+.svc-figure img.on { opacity: 1; transform: scale(1); }
+.svc-figure .frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14, 11, 8, .6)); }
+.svc-list, .svc-intro { padding: 0 var(--pad); }
+.svc-intro { grid-column: 2; }
+.svc-figure { grid-row: 1 / span 2; }
+.svc-list { grid-column: 2; }
+.svc-intro { min-height: 70svh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 12svh; }
+.svc-intro p { color: var(--text); max-width: 26em; margin-top: 24px; }
+.svc { min-height: 85svh; display: flex; flex-direction: column; justify-content: center; max-width: 30em; }
+/* services out of focus are dimmed but stay readable (contrast above 4.5:1) */
+.svc h3, .svc p { color: var(--mute); transition: color .8s; }
+.svc.on h3 { color: var(--ivory); }
+.svc.on p { color: var(--text); }
+.svc h3 { font-size: clamp(36px, 4vw, 54px); line-height: 1.05; margin-bottom: 18px; }
+.svc p { color: var(--text); font-size: 18px; }
+.svc ul { list-style: none; margin-top: 24px; color: var(--mute); font-size: 15px; }
+.svc li { padding: 10px 0; border-top: 1px solid var(--line); }
+
+/* ---------- work: a horizontal gallery (swipe on phones, pinned scroll on desktop) ---------- */
+.work { position: relative; }
+.work-pin { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 36px; overflow: hidden; }
+.work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 0 var(--pad); }
+.work-head h2 { font-size: clamp(40px, 4.6vw, 68px); }
+.work-head p { color: var(--mute); font-size: 15px; max-width: 18em; text-align: right; }
+.work-track { display: flex; gap: 28px; padding: 0 var(--pad); width: max-content; will-change: transform; }
+.case { flex: none; width: clamp(300px, 28vw, 420px); display: flex; flex-direction: column; }
+.case figure { position: relative; height: clamp(220px, 40svh, 420px); border-radius: 8px; overflow: hidden; }
+.case figure img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.case:hover figure img { transform: scale(1.04); }
+.case figure span { position: absolute; left: 14px; top: 14px; background: rgba(14, 11, 8, .72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--ivory); font-size: 13px; padding: 6px 14px; border-radius: 99px; }
+/* a branch still being built: the photo turns into a blueprint, crossed by site tape */
+.case .building img { filter: grayscale(.6) brightness(.5) sepia(.25); }
+.case .building::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(201, 162, 107, .16) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, rgba(201, 162, 107, .16) 0 1px, transparent 1px 32px); }
+.case .tape { position: absolute; z-index: 2; left: -15%; right: -15%; bottom: 20%; transform: rotate(-9deg); padding: 8px 0; text-align: center; font: 500 13px/1 Jost, sans-serif; font-style: normal; letter-spacing: .08em; color: var(--bg);
+  background: repeating-linear-gradient(-45deg, var(--gold) 0 18px, #1A140F 18px 36px); box-shadow: 0 8px 24px rgba(0, 0, 0, .5); }
+.case .tape b { display: inline-block; background: var(--gold); padding: 6px 14px; font-weight: 500; }
+.case figure > span { z-index: 3; }
+.case h3 { font-size: 32px; line-height: 1.1; margin-top: 22px; }
+.case h3 small { font: 300 15px Jost, sans-serif; color: var(--mute); margin-left: 8px; }
+.case .big { margin-top: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); color: var(--text); font-size: 15px; }
+.case .big b { display: block; font: 400 64px/1 var(--serif); color: var(--gold); margin-bottom: 4px; }
+.case dl { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.case dd { font: 400 22px/1.15 var(--serif); color: var(--ivory); }
+.case dd a { color: var(--gold); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.case dt { font-size: 13px; color: var(--mute); margin-top: 6px; }
+.case dl div { display: flex; flex-direction: column-reverse; }
+.case.next { justify-content: center; align-self: stretch; padding: 40px 32px; border: 1px solid var(--line); border-radius: 8px; background: radial-gradient(ellipse at 50% 30%, rgba(201, 140, 70, .14), transparent 70%); }
+.case.next h3 { font-size: 40px; margin: 0 0 16px; }
+.case.next p { color: var(--text); margin-bottom: 32px; }
+.case.next .btn { align-self: flex-start; }
+.stages { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 18px; font-size: 13px; color: var(--mute); }
+.stages li { position: relative; padding-top: 16px; }
+.stages li::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: var(--line); }
+.stages li::after { content: ""; position: absolute; left: 0; top: 0; width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--mute); background: var(--bg); }
+.stages .done::before, .stages .done::after { background: var(--gold); border-color: var(--gold); }
+.stages .now { color: var(--ivory); }
+.stages .now::after { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201, 162, 107, .2); }
+.work-progress { height: 1px; margin: 0 var(--pad); background: var(--line); }
+.work-progress span { display: block; height: 100%; background: var(--gold); transform-origin: left; transform: scaleX(var(--p, .25)); transition: transform .2s; }
+
+/* ---------- story ---------- */
+.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: center; padding: 120px var(--pad) 160px; }
+.story img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 8px; }
+.story p { color: var(--text); font-size: 18px; margin-top: 24px; max-width: 30em; }
+.sign { font: 56px/1 "Pinyon Script", cursive; color: var(--gold); margin-top: 36px; }
+
+/* ---------- voices ---------- */
+.voices { position: relative; min-height: 88svh; display: grid; place-items: center; text-align: center; padding: 120px var(--pad); overflow: hidden; }
+.voices .bgs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.6s; }
+.voices .bgs img.on { opacity: .28; }
+.voices .bgs::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(14, 11, 8, .4), var(--bg) 80%); }
+.voices .quotes { position: relative; display: grid; max-width: 980px; }
+.voices blockquote { grid-area: 1 / 1; opacity: 0; transform: translateY(12px); transition: opacity 1.2s, transform 1.2s; }
+.voices blockquote.on { opacity: 1; transform: none; }
+.voices blockquote p { font: italic 400 clamp(32px, 4.2vw, 56px)/1.18 var(--serif); }
+.voices cite { display: block; margin-top: 32px; font-style: normal; font-size: 15px; color: var(--mute); }
+.voices .who { position: relative; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 56px; }
+.voices .who button { background: none; border: 1px solid transparent; border-radius: 99px; padding: 8px 18px; font: inherit; font-size: 14px; color: var(--mute); cursor: pointer; }
+.voices .who button[aria-pressed="true"] { border-color: var(--line); color: var(--gold); }
+
+/* ---------- final call ---------- */
+.call { display: grid; justify-items: center; text-align: center; padding: 80px var(--pad) 140px; border-top: 1px solid var(--line); }
+.call img { width: min(340px, 70vw); height: auto; margin-bottom: 16px; }
+.call h2 { max-width: 12em; }
+.call p { color: var(--text); margin: 24px 0 44px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 36px var(--pad); border-top: 1px solid var(--line); font-size: 14px; color: var(--mute); }
+footer div { display: flex; gap: 28px; }
+footer a:hover { color: var(--gold); }
+
+/* ---------- small screens ---------- */
+@media (max-width: 900px) {
+  nav { height: 72px; gap: 12px; }
+  nav ul, nav > .btn { display: none; }
+  .menu-btn { display: block; }
+  .logo b { font-size: 20px; }
+  /* phone hero: the portrait becomes a full-width arched window; the headline overlaps its faded foot */
+  .hero { grid-template-columns: minmax(0, 1fr); align-content: start; gap: 0; min-height: 100svh; padding: 80px 16px 28px; }
+  .hero::before { background: radial-gradient(ellipse 90% 45% at 50% 30%, rgba(201, 140, 70, .16), transparent 70%); }
+  .stage { order: -1; width: 100%; height: clamp(260px, 54svh, 520px); justify-self: stretch; margin: 0; }
+  .stage::before { inset: -8px; -webkit-mask-image: linear-gradient(#000 55%, transparent 85%); mask-image: linear-gradient(#000 55%, transparent 85%); }
+  .arch { height: 100%; aspect-ratio: auto; }
+  .arch img { object-position: 56% 25%; }
+  .arch::after { background: linear-gradient(transparent 45%, rgba(14, 11, 8, .55) 70%, var(--bg) 100%); }
+  .arch-cap { display: none; }
+  .cup-spot { left: auto; right: 7%; bottom: 19%; width: 27%; }
+  .hero > div:first-child { position: relative; z-index: 4; margin-top: -56px; }
+  .hero .label { margin-bottom: 8px; font-size: 14px; }
+  .hero h1 { font-size: clamp(42px, 12.4vw, 60px); margin-bottom: 14px; }
+  .hero p { font-size: 16px; line-height: 1.6; margin-bottom: 22px; }
+  .ctas { gap: 10px; }
+  .ctas .btn { flex: 1; text-align: center; padding: 15px 12px; }
+  .skip { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); }
+  .proof div { padding: 36px 8px; }
+  .proof b { font-size: clamp(34px, 10vw, 56px); }
+  .proof span { display: block; font-size: 13px; line-height: 1.4; margin-top: 6px; }
+  /* services keep the sticky story: the photo pins to the top, services scroll beneath it */
+  .services { grid-template-columns: minmax(0, 1fr); }
+  .svc-figure { z-index: 2; height: 40svh; padding: 12px 16px; background: var(--bg); }
+  .svc-intro { min-height: 0; padding: 48px var(--pad) 8px; }
+  .svc-intro, .svc-list, .svc-figure { grid-column: auto; grid-row: auto; }
+  .svc { min-height: 62svh; padding: 32px 0; justify-content: flex-start; }
+  .svc h3 { font-size: 34px; margin-bottom: 12px; }
+  .svc p { font-size: 16px; }
+  /* phones: native swipe with snap, the line underneath follows the swipe */
+  .work { padding: 88px 0 24px; height: auto !important; }
+  .work-pin { position: static; height: auto; gap: 28px; overflow: visible; }
+  .work-head { display: block; padding: 0 16px; }
+  .work-head p { text-align: left; margin-top: 12px; font-size: 14px; }
+  .work-track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; padding: 0 16px; gap: 12px; scrollbar-width: none; transform: none !important; }
+  .work-track::-webkit-scrollbar { display: none; }
+  .case { width: 84vw; max-width: 380px; scroll-snap-align: start; }
+  .case figure { height: auto; aspect-ratio: 1; }
+  .case h3 { font-size: 30px; margin-top: 18px; }
+  .case .big b { font-size: 54px; }
+  .case.next { padding: 32px 24px; }
+  .case.next h3 { font-size: 36px; }
+  .work-progress { margin: 0 16px; }
+  .story { grid-template-columns: minmax(0, 1fr); padding: 80px 16px 112px; }
+  .story p { font-size: 16px; }
+  .voices { min-height: 0; padding: 112px 16px; }
+  .call { padding: 64px 16px 112px; }
+  footer { flex-direction: column; }
+}
+@media (max-width: 900px) and (max-height: 700px) {
+  .stage { height: 44svh; }
+  .hero h1 { font-size: 40px; }
+  .hero p { font-size: 15px; margin-bottom: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+}
+</style>
+</head>
+<body class="intro">
+<script>
+  // Reduced-motion users skip the pour and land on the finished hero.
+  (() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.body.className = "no-intro ready";
+    history.scrollRestoration = "manual";
+        // slow connection: if the cup hasn't started pouring after 2.5 s, show the page now and let the cup appear in place
+    setTimeout(() => /\b(ready|pouring)\b/.test(document.body.className) || (document.body.className = "ready"), 2500);
+  })();
+</script>
+
+<nav aria-label="Main">
+  <a class="logo" href="#top"><b>Mitua Rahman</b><span>Café consultant</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#story">Story</a></li>
+  </ul>
+  <a class="btn ghost" href="#contact">Book a call</a>
+  <button class="menu-btn" type="button" popovertarget="menu">Menu</button>
+</nav>
+<div id="menu" popover>
+  <button class="menu-close" type="button" popovertarget="menu" popovertargetaction="hide">Close</button>
+  <a href="#services">Services</a><a href="#work">Work</a><a href="#story">Story</a><a href="#contact">Book a call</a>
+</div>
+
+<main>
+  <section class="hero" id="top">
+    <div>
+      <span class="label rv">Independent café consultant</span>
+      <h1><span class="ln"><span>Great cafés</span></span><span class="ln"><span><em>don't happen</em></span></span><span class="ln"><span>by accident.</span></span></h1>
+      <p class="rv">From the first idea to the final cup, I help founders build cafés people love, and businesses that last.</p>
+      <div class="ctas rv">
+        <a class="btn solid" href="#contact">Book a consultation</a>
+        <a class="btn ghost" href="#work">See my work</a>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="arch"><img src="assets/img/mitua-700.webp" srcset="assets/img/mitua-700.webp 700w, assets/img/mitua-1092.webp 1092w" sizes="(max-width: 900px) 92vw, 440px" alt="Mitua Rahman seated at a café table by the window" width="1092" height="1100" fetchpriority="high"></div>
+      <div class="arch-cap rv"><b>Mitua Rahman</b>Café consultant</div>
+      <div class="cup-spot" aria-hidden="true"></div>
+    </div>
+    <canvas id="cup" aria-hidden="true"></canvas>
+  </section>
+  <button class="skip" type="button">Skip intro</button>
+
+  <section class="proof" aria-label="In numbers">
+    <div><b>1</b><span>café opened</span></div>
+    <div><b>2</b><span>cafés being built now</span></div>
+    <div><b>2</b><span>countries, Saudi Arabia and Bangladesh</span></div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="svc-intro">
+        <span class="label">Services</span>
+        <h2>Everything between the idea and a full room.</h2>
+        <p>Hire me for one part or the whole journey. Most founders start with a concept and a set of numbers.</p>
+      </div>
+    <div class="svc-figure" aria-hidden="true">
+      <div class="frame">
+        <img class="on" src="assets/img/gallery-03-800.webp" srcset="assets/img/gallery-03-800.webp 800w, assets/img/gallery-03-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 50vw" alt="">
+        <img src="assets/img/gallery-09-800.webp" srcset="assets/img/gallery-09-800.webp 800w, assets/img/gallery-09-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 50vw" alt="" loading="lazy" decoding="async">
+        <img src="assets/img/gallery-07-800.webp" srcset="assets/img/gallery-07-800.webp 800w, assets/img/gallery-07-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 50vw" alt="" loading="lazy" decoding="async">
+        <img src="assets/img/barista-960-800.webp" srcset="assets/img/barista-960-800.webp 800w, assets/cafelytics/cafelytics-barista-960.webp 960w" sizes="(max-width: 900px) 100vw, 50vw" alt="" loading="lazy" decoding="async">
+        <img src="assets/img/gallery-06-800.webp" srcset="assets/img/gallery-06-800.webp 800w, assets/img/gallery-06-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 50vw" alt="" loading="lazy" decoding="async">
+      </div>
+    </div>
+    <div class="svc-list">
+      <article class="svc on">
+        <h3>Concept and brand</h3>
+        <p>Who your café is for, what it stands for, and how that shows up in the name, the room and the cup.</p>
+        <ul><li>Market and location study</li><li>Positioning and name</li><li>Brand and interior direction</li></ul>
+      </article>
+      <article class="svc">
+        <h3>Space and bar flow</h3>
+        <p>A layout where guests know where to go, and baristas never take an extra step during the morning rush.</p>
+        <ul><li>Floor plan and seating</li><li>Bar workflow design</li><li>Equipment selection</li></ul>
+      </article>
+      <article class="svc">
+        <h3>Menu and costing</h3>
+        <p>A focused menu with every recipe costed to the gram, so each item earns its place on the board.</p>
+        <ul><li>Coffee and food menu</li><li>Recipe cards and costing</li><li>Supplier and roaster sourcing</li></ul>
+      </article>
+      <article class="svc">
+        <h3>Team and training</h3>
+        <p>Hiring, recipes and service standards your team can keep long after I've gone.</p>
+        <ul><li>Hiring and roles</li><li>Barista training</li><li>Service standards</li></ul>
+      </article>
+      <article class="svc">
+        <h3>Opening and growth</h3>
+        <p>A launch plan, the first ninety days, and a clear look at the numbers every month after.</p>
+        <ul><li>Budget and profit plan</li><li>Launch and soft opening</li><li>Turnarounds for open cafés</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="work-pin">
+      <div class="work-head">
+        <div><span class="label">Selected work</span><h2>Empty rooms, turned into regulars.</h2></div>
+        <p>Cafelytics is open in Dhaka. Its Saudi branch and a new Bangladeshi café are being built now.</p>
+      </div>
+      <div class="work-track">
+      <article class="case">
+        <figure><img src="assets/img/gallery-10-800.webp" srcset="assets/img/gallery-10-800.webp 800w, assets/img/gallery-10-1400.webp 1400w" sizes="(max-width: 900px) 84vw, 28vw" alt="Stained-glass window corner and wooden seating at Cafelytics" loading="lazy" decoding="async"><span>Open now</span></figure>
+        <h3>Cafelytics<small>Dhanmondi, Dhaka</small></h3>
+        <p class="big"><b>Open daily</b>8 AM to 11 PM, coffee, all-day breakfast and food</p>
+        <dl><div><dt>Scope</dt><dd>Concept to opening</dd></div><div><dt>See it</dt><dd><a href="https://cafelyticscoffee.com/" target="_blank" rel="noopener">cafelyticscoffee.com</a></dd></div></dl>
+      </article>
+      <article class="case">
+        <figure class="building"><img src="assets/img/gallery-05-800.webp" srcset="assets/img/gallery-05-800.webp 800w, assets/img/gallery-05-1400.webp 1400w" sizes="(max-width: 900px) 84vw, 28vw" alt="The Cafelytics lounge and wall mural in Dhaka, the brand the Saudi branch is based on" loading="lazy" decoding="async"><span>In progress</span><i class="tape" aria-hidden="true"><b>Under construction</b></i></figure>
+        <h3>Cafelytics<small>Saudi Arabia</small></h3>
+        <p class="big"><b>Building</b>the brand's second branch, now in the build phase</p>
+        <ol class="stages" aria-label="Project stage"><li class="done">Concept</li><li class="done">Design</li><li class="now" aria-current="step">Build</li><li>Opening</li></ol>
+      </article>
+      <article class="case">
+        <figure><img src="assets/img/gallery-11-800.webp" srcset="assets/img/gallery-11-800.webp 800w, assets/img/gallery-11-1400.webp 1400w" sizes="(max-width: 900px) 84vw, 28vw" alt="Window-side café seating with a city view" loading="lazy" decoding="async"><span>In progress</span></figure>
+        <h3>A new café<small>Bangladesh</small></h3>
+        <p class="big"><b>Building</b>name under wraps until opening, now in the build phase</p>
+        <ol class="stages" aria-label="Project stage"><li class="done">Concept</li><li class="done">Design</li><li class="now" aria-current="step">Build</li><li>Opening</li></ol>
+      </article>
+      <article class="case next">
+          <h3>Your café could be next.</h3>
+          <p>Planning a new café, or fixing one that's open? Let's talk it through.</p>
+          <a class="btn solid" href="#contact">Book a consultation</a>
+        </article>
+      </div>
+      <div class="work-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </section>
+
+  <section class="story" id="story">
+    <img src="assets/img/gallery-04-800.webp" srcset="assets/img/gallery-04-800.webp 800w, assets/img/gallery-04-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 45vw" alt="The coffee counter at Cafelytics under warm pendant lights" loading="lazy" decoding="async">
+    <div>
+      <span class="label">My story</span>
+      <h2>From one café in Dhaka to the next.</h2>
+      <p>I built Cafelytics, a modern café in Dhanmondi that's open every day from eight in the morning until eleven at night. Now I'm taking it to Saudi Arabia, and helping another Bangladeshi café through its build.</p>
+      <p>Now I work with a small number of founders each year, so every project gets my full attention, from the first sketch to the first regular.</p>
+      <div class="sign" aria-hidden="true">Mitua</div>
+    </div>
+  </section>
+
+  <section class="voices" aria-label="How I work">
+    <div class="bgs" aria-hidden="true">
+      <img class="on" src="assets/img/gallery-11-800.webp" srcset="assets/img/gallery-11-800.webp 800w, assets/img/gallery-11-1400.webp 1400w" sizes="100vw" alt="" loading="lazy" decoding="async">
+      <img src="assets/img/gallery-08-800.webp" srcset="assets/img/gallery-08-800.webp 800w, assets/img/gallery-08-1400.webp 1400w" sizes="100vw" alt="" loading="lazy" decoding="async">
+      <img src="assets/img/gallery-10-800.webp" srcset="assets/img/gallery-10-800.webp 800w, assets/img/gallery-10-1400.webp 1400w" sizes="100vw" alt="" loading="lazy" decoding="async">
+    </div>
+    <div>
+      <div class="quotes" aria-live="polite">
+        <blockquote class="on"><p>“A café isn't built on opening day. It's built in the hundred small decisions before it, and the first regular after it.”</p><cite>Mitua Rahman</cite></blockquote>
+        <blockquote><p>“I design for the Tuesday morning rush, not the launch photos. That's when you find out if a café works.”</p><cite>Mitua Rahman</cite></blockquote>
+        <blockquote><p>“Every table, recipe and price should earn its place. Beautiful is the start, not the finish.”</p><cite>Mitua Rahman</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="call" id="contact">
+    <img src="assets/img/cup-finished.webp" alt="" width="680" height="560" loading="lazy" decoding="async">
+    <h2>Let's make the next one yours.</h2>
+    <p>Tell me about your café. I reply within two days.</p>
+    <a class="btn solid" href="mailto:justmitua@gmail.com?subject=Café%20consultation">Book a free consultation</a>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 Mitua Rahman</span>
+  <div><a href="mailto:justmitua@gmail.com">justmitua@gmail.com</a><a href="https://www.instagram.com/mituarahman/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/mitua.mithun/" target="_blank" rel="noopener">Facebook</a></div>
+</footer>
+
+<script>
+  // proof numbers count up once when they scroll into view
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const countIO = new IntersectionObserver((entries) => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    countIO.unobserve(e.target);
+    const el = e.target, n = +el.dataset.count, pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
+    if (still) return;
+    const t0 = performance.now();
+    const tick = now => {
+      const k = Math.min(1, (now - t0) / 1600);
+      el.textContent = pre + Math.round(n * (1 - Math.pow(1 - k, 3))) + suf;
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }), { threshold: .6 });
+  document.querySelectorAll("[data-count]").forEach(el => countIO.observe(el));
+
+  // services: the photo on the left follows whichever service is in the middle of the screen
+  const svcs = [...document.querySelectorAll(".svc")], figs = document.querySelectorAll(".svc-figure img");
+  const svcIO = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const i = svcs.indexOf(e.target);
+    svcs.forEach((s, j) => s.classList.toggle("on", i === j));
+    figs.forEach((f, j) => f.classList.toggle("on", i === j));
+  }), { rootMargin: matchMedia("(max-width: 900px)").matches ? "-72% 0px -28% 0px" : "-50% 0px -50% 0px" }); // phones: the photo covers the top 40%, so read the service just below it
+  svcs.forEach(s => svcIO.observe(s));
+
+  // phone menu closes once a link is picked; older iPhones (before iOS 17) have no popover support, so toggle it by hand there
+  const menu = document.getElementById("menu"), hasPopover = "showPopover" in HTMLElement.prototype;
+  if (!hasPopover) document.querySelectorAll("[popovertarget]").forEach(b => b.addEventListener("click", () => menu.classList.toggle("open")));
+  menu.addEventListener("click", e => e.target.closest("a") && (hasPopover ? menu.hidePopover() : menu.classList.remove("open")));
+
+  // skip works even before the 3D cup has loaded
+  document.querySelector(".skip").addEventListener("click", () => document.body.classList.contains("pouring") || (document.body.className = "ready"));
+
+  // work: on desktop the section pins and vertical scrolling moves the gallery sideways
+  const work = document.querySelector(".work"), track = work.querySelector(".work-track"), bar = work.querySelector(".work-progress span");
+  const wide = matchMedia("(min-width: 901px)");
+  let dist = 0;
+  const sizeWork = () => {
+    dist = wide.matches ? Math.max(0, track.scrollWidth - innerWidth) : 0;
+    work.style.height = dist ? innerHeight + dist + "px" : "";
+    moveWork();
+  };
+  const moveWork = () => {
+    if (!dist) return;
+    const p = Math.min(1, Math.max(0, -work.getBoundingClientRect().top / dist));
+    track.style.transform = `translateX(${-p * dist}px)`;
+    bar.style.setProperty("--p", .25 + p * .75);
+  };
+  addEventListener("scroll", moveWork, { passive: true });
+  // phones swipe the track natively; the line follows the swipe
+  track.addEventListener("scroll", () => bar.style.setProperty("--p", .25 + .75 * track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth)), { passive: true });
+  addEventListener("resize", sizeWork);
+  wide.addEventListener("change", sizeWork);
+  addEventListener("load", sizeWork);
+  sizeWork();
+
+  // client voices: one at a time, changing slowly until someone picks a name
+  const quotes = document.querySelectorAll(".voices blockquote"), bgs = document.querySelectorAll(".voices .bgs img"), who = document.querySelectorAll(".voices .who button");
+  let q = 0, timer;
+  const show = i => {
+    q = i;
+    quotes.forEach((el, j) => el.classList.toggle("on", i === j));
+    bgs.forEach((el, j) => el.classList.toggle("on", i === j));
+    who.forEach((el, j) => el.setAttribute("aria-pressed", i === j));
+  };
+  who.forEach((b, i) => b.addEventListener("click", () => { clearInterval(timer); show(i); }));
+  if (!still) timer = setInterval(() => show((q + 1) % quotes.length), 8000);
+</script>
+
+<script type="module" src="js/cup.js"></script>
+</body>
+</html>
